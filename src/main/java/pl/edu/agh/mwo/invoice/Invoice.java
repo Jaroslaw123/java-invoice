@@ -9,17 +9,13 @@ import java.util.Map;
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-
-//    Collection<Product> products = new ArrayList<>();
     Map<Product, Integer> productIntegerMap = new HashMap<Product, Integer>();
-
     public void addProduct(Product product) {
         if (product == null){
             throw new IllegalArgumentException();
         }
         productIntegerMap.put(product,1);
     }
-
     public void addProduct(Product product, Integer quantity) {
         if(quantity.compareTo(0) <= 0){
             throw new IllegalArgumentException();
@@ -34,9 +30,7 @@ public class Invoice {
             }
 
             return subtotal;
-
     }
-
     public BigDecimal getTax() {
         BigDecimal fullTax = BigDecimal.ZERO;
 
@@ -46,14 +40,12 @@ public class Invoice {
 
         return fullTax;
     }
-
     public BigDecimal getTotal() {
         BigDecimal total = BigDecimal.ZERO;
 
         for(Map.Entry<Product, Integer> entry : productIntegerMap.entrySet()){
             total = total.add(entry.getKey().getPriceWithTax().multiply(BigDecimal.valueOf(entry.getValue())));
         }
-
         return total;
     }
 }
