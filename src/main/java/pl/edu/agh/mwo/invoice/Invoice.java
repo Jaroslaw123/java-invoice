@@ -53,8 +53,8 @@ public class Invoice {
     public ArrayList<String> getProductList() {
         return productList;
     }
-    
-    public ArrayList<String> generateProductList(){
+
+    public ArrayList<String> generateProductList() {
         productList.add(String.valueOf(invoiceNumber));
         return productList;
     }
