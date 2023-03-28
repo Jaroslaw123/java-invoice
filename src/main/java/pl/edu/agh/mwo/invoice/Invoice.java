@@ -16,6 +16,7 @@ public class Invoice {
     public void addProduct(Product product) {
         addProduct(product, 1);
     }
+
     public void addProduct(Product product, Integer quantity) {
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
@@ -44,15 +45,17 @@ public class Invoice {
         }
         return totalGross;
     }
+
     public int getNumber() {
         return invoiceNumber;
     }
+
     public ArrayList<String> getProductList() {
         return productList;
     }
+    
     public ArrayList<String> generateProductList(){
         productList.add(String.valueOf(invoiceNumber));
         return productList;
     }
-
 }
