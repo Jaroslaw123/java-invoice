@@ -1,6 +1,7 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,11 +11,11 @@ public class Invoice {
     private Map<Product, Integer> products = new HashMap<>();
     private static int nextNumber = 0;
     private final int invoiceNumber = ++nextNumber;
+    private ArrayList<String> productList = new ArrayList<String>();
 
     public void addProduct(Product product) {
         addProduct(product, 1);
     }
-
     public void addProduct(Product product, Integer quantity) {
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
@@ -43,8 +44,15 @@ public class Invoice {
         }
         return totalGross;
     }
-
     public int getNumber() {
         return invoiceNumber;
     }
+    public ArrayList<String> getProductList() {
+        return productList;
+    }
+    public ArrayList<String> generateProductList(){
+        productList.add(String.valueOf(invoiceNumber));
+        return productList;
+    }
+
 }

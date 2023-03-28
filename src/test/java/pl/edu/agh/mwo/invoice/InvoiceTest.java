@@ -143,11 +143,18 @@ public class InvoiceTest {
     public void testInvoiceDoesNotChangeItsNumber() {
         Assert.assertEquals(invoice.getNumber(), invoice.getNumber());
     }
-
     @Test
     public void testTheFirstInvoiceNumberIsLowerThanTheSecond() {
         int number1 = new Invoice().getNumber();
         int number2 = new Invoice().getNumber();
         Assert.assertThat(number1, Matchers.lessThan(number2));
+    }
+    @Test
+    public void testTheFirstLineInProductListIsInvoiceNumber(){
+        Invoice invoice1 = new Invoice();
+        invoice1.generateProductList();
+        int number1 = invoice1.getNumber();
+        String firstLineInProductList = invoice1.getProductList().get(0);
+        Assert.assertEquals(String.valueOf(number1),firstLineInProductList);
     }
 }
