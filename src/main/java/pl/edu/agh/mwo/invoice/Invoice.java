@@ -11,8 +11,14 @@ public class Invoice {
     private Map<Product, Integer> products = new HashMap<>();
     private static int nextNumber = 0;
     private final int invoiceNumber = ++nextNumber;
-    private ArrayList<String> productList = new ArrayList<String>();
     private int itemCounter = 0;
+
+    public Map<Product, Integer> getProducts() {
+        return products;
+    }
+
+    private ArrayList<String> productList = new ArrayList<String>();
+
 
     public int getItemCounter() {
         return this.itemCounter;
@@ -27,10 +33,20 @@ public class Invoice {
     }
 
     public void addProduct(Product product, Integer quantity) {
+        Boolean equalProductFlag = false;
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
         }
-        products.put(product, quantity);
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+            if (entry.getKey().getName() == product.getName()) {
+                entry.setValue(entry.getValue() + quantity);
+                equalProductFlag = true;
+                break;
+            }
+        }
+        if (!equalProductFlag) {
+            products.put(product, quantity);
+        }
     }
 
     public BigDecimal getNetTotal() {
@@ -67,8 +83,7 @@ public class Invoice {
         productList.clear();
         productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue())
-                    + ", " + String.valueOf(entry.getKey().getPrice());
+            String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue()) + ", " + String.valueOf(entry.getKey().getPrice());
             productList.add(productItem);
             incrementItemCounter();
         }

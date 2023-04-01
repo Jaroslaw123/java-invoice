@@ -2,6 +2,7 @@ package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -196,5 +197,23 @@ public class InvoiceTest {
         ArrayList<String> productList = invoice1.getProductList();
         String secondLineInProductList = productList.get(1);
         Assert.assertEquals("Chleb, 2, 5", secondLineInProductList);
+    }
+
+    @Test
+    public void testTheProductListHasProperDuplicatedValues() {
+        Invoice invoice1 = new Invoice();
+        invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice1.addProduct(new DairyProduct("Chedar", new BigDecimal("10")), 3);
+        invoice1.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+        invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 125);
+        int specyficProductQuantity = 0;
+        Map<Product, Integer> product1 = invoice1.getProducts();
+        for (Map.Entry<Product, Integer> entry : product1.entrySet()) {
+            if (entry.getKey().getName() == "Chleb") {
+                specyficProductQuantity = entry.getValue();
+            }
+        }
+        Assert.assertEquals(specyficProductQuantity, 127);
+
     }
 }
