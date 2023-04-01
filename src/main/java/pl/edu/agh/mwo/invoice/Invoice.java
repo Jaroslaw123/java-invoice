@@ -83,7 +83,8 @@ public class Invoice {
         productList.clear();
         productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue()) + ", " + String.valueOf(entry.getKey().getPrice());
+            String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue())
+                    + ", " + String.valueOf(entry.getKey().getPrice());
             productList.add(productItem);
             incrementItemCounter();
         }
