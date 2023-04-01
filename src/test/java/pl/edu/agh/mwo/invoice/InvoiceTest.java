@@ -177,4 +177,24 @@ public class InvoiceTest {
         String lastLineInProductList = productList.get(productList.size() - 1);
         Assert.assertEquals(invoiceItem + String.valueOf(invoice1.getItemCounter()), lastLineInProductList);
     }
+
+    @Test
+    public void testTheProductListCounterHasProperValue() {
+        Invoice invoice1 = new Invoice();
+        invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice1.addProduct(new DairyProduct("Chedar", new BigDecimal("10")), 3);
+        invoice1.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+        invoice1.generateProductList();
+        Assert.assertEquals(3, invoice1.getItemCounter());
+    }
+
+    @Test
+    public void testTheProductListHasProperValue() {
+        Invoice invoice1 = new Invoice();
+        invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice1.generateProductList();
+        ArrayList<String> productList = invoice1.getProductList();
+        String secondLineInProductList = productList.get(1);
+        Assert.assertEquals("Chleb, 2, 5", secondLineInProductList);
+    }
 }
