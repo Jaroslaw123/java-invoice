@@ -12,6 +12,15 @@ public class Invoice {
     private static int nextNumber = 0;
     private final int invoiceNumber = ++nextNumber;
     private ArrayList<String> productList = new ArrayList<String>();
+    private int itemCounter = 0;
+
+    public int getItemCounter() {
+        return this.itemCounter;
+    }
+
+    public int getNumber() {
+        return this.invoiceNumber;
+    }
 
     public void addProduct(Product product) {
         addProduct(product, 1);
@@ -46,8 +55,8 @@ public class Invoice {
         return totalGross;
     }
 
-    public int getNumber() {
-        return invoiceNumber;
+    public void incrementItemCounter() {
+        itemCounter++;
     }
 
     public ArrayList<String> getProductList() {
@@ -55,7 +64,14 @@ public class Invoice {
     }
 
     public ArrayList<String> generateProductList() {
-        productList.add(String.valueOf(invoiceNumber));
+        productList.clear();
+        productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+            String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue()) + ", " + String.valueOf(entry.getKey().getPrice());
+            productList.add(productItem);
+            incrementItemCounter();
+        }
+        productList.add("Liczba pozycji: " + String.valueOf(getItemCounter()));
         return productList;
     }
 }

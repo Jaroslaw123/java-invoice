@@ -1,13 +1,13 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.mwo.invoice.Invoice;
 import pl.edu.agh.mwo.invoice.product.DairyProduct;
 import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
@@ -143,18 +143,38 @@ public class InvoiceTest {
     public void testInvoiceDoesNotChangeItsNumber() {
         Assert.assertEquals(invoice.getNumber(), invoice.getNumber());
     }
+
     @Test
     public void testTheFirstInvoiceNumberIsLowerThanTheSecond() {
         int number1 = new Invoice().getNumber();
         int number2 = new Invoice().getNumber();
         Assert.assertThat(number1, Matchers.lessThan(number2));
     }
+
     @Test
-    public void testTheFirstLineInProductListIsInvoiceNumber(){
+    public void testTheFirstLineInProductListIsInvoiceNumber() {
         Invoice invoice1 = new Invoice();
+        invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice1.addProduct(new DairyProduct("Chedar", new BigDecimal("10")), 3);
+        invoice1.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
         invoice1.generateProductList();
+        ArrayList<String> productList = invoice1.getProductList();
         int number1 = invoice1.getNumber();
-        String firstLineInProductList = invoice1.getProductList().get(0);
-        Assert.assertEquals(String.valueOf(number1),firstLineInProductList);
+        String invoiceNumber = "Numer faktury: ";
+        String firstLineInProductList = productList.get(0);
+        Assert.assertEquals(invoiceNumber + String.valueOf(number1), firstLineInProductList);
+    }
+
+    @Test
+    public void testTheLastLineInProductListIsItemNumber() {
+        Invoice invoice1 = new Invoice();
+        invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice1.addProduct(new DairyProduct("Chedar", new BigDecimal("10")), 3);
+        invoice1.addProduct(new OtherProduct("Pinezka", new BigDecimal("0.01")), 1000);
+        invoice1.generateProductList();
+        ArrayList<String> productList = invoice1.getProductList();
+        String invoiceItem = "Liczba pozycji: ";
+        String lastLineInProductList = productList.get(productList.size() - 1);
+        Assert.assertEquals(invoiceItem + String.valueOf(invoice1.getItemCounter()), lastLineInProductList);
     }
 }
