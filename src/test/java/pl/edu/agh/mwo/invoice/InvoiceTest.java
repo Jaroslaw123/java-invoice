@@ -9,10 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.edu.agh.mwo.invoice.product.DairyProduct;
-import pl.edu.agh.mwo.invoice.product.OtherProduct;
-import pl.edu.agh.mwo.invoice.product.Product;
-import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
+import pl.edu.agh.mwo.invoice.product.*;
 
 public class InvoiceTest {
     private Invoice invoice;
@@ -193,6 +190,7 @@ public class InvoiceTest {
     public void testTheProductListHasProperValue() {
         Invoice invoice1 = new Invoice();
         invoice1.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice1.addProduct(new DairyProduct("Chedar", new BigDecimal("10")), 3);
         invoice1.generateProductList();
         ArrayList<String> productList = invoice1.getProductList();
         String secondLineInProductList = productList.get(1);
@@ -214,6 +212,18 @@ public class InvoiceTest {
             }
         }
         Assert.assertEquals(specyficProductQuantity, 127);
-
     }
+
+    @Test
+    public void testTheExciseProductListHasProperValue() {
+        Invoice invoice1 = new Invoice();
+        invoice1.addProduct(new BottleOfWine("Champagne", new BigDecimal("100")), 2);
+        invoice1.addProduct(new FuelCanister("Diesel", new BigDecimal("8")), 50);
+        invoice1.addProduct(new FuelCanister("Petrol", new BigDecimal("7")), 60);
+        invoice1.generateProductList();
+        ArrayList<String> productList = invoice1.getProductList();
+        String secondLineInProductList = productList.get(1);
+        Assert.assertEquals("Champagne, 2, 123.00", secondLineInProductList);
+    }
+
 }
