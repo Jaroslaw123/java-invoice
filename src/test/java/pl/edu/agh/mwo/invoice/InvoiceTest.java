@@ -1,6 +1,7 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -223,7 +224,19 @@ public class InvoiceTest {
         invoice1.generateProductList();
         ArrayList<String> productList = invoice1.getProductList();
         String secondLineInProductList = productList.get(1);
-        Assert.assertEquals("Champagne, 2, 123.00", secondLineInProductList);
+        Assert.assertEquals("Champagne, 2, 128.6", secondLineInProductList);
     }
 
+    @Test
+    public void testTheExciseProductOnMotherInLawDay() {
+        Invoice invoice1 = new Invoice();
+        LocalDate motherInLawDay = LocalDate.of(2023, 03, 05);
+        invoice1.addProduct(new BottleOfWine("Champagne", new BigDecimal("100"), motherInLawDay), 2);
+        invoice1.addProduct(new FuelCanister("Diesel", new BigDecimal("8"), motherInLawDay), 50);
+        invoice1.addProduct(new FuelCanister("Petrol", new BigDecimal("7"), motherInLawDay), 60);
+        invoice1.generateProductList();
+        ArrayList<String> productList = invoice1.getProductList();
+        String thirdLineInProductList = productList.get(2);
+        Assert.assertEquals("Diesel, 50, 9.84", thirdLineInProductList);
+    }
 }
