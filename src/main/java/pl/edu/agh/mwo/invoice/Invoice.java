@@ -1,6 +1,7 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -85,7 +86,7 @@ public class Invoice {
         productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue())
-                    + ", " + String.valueOf(entry.getKey().getPriceWithTax());
+                    + ", " + String.valueOf(entry.getKey().getPriceWithTax().round(new MathContext(4)));
             productList.add(productItem);
             incrementItemCounter();
         }

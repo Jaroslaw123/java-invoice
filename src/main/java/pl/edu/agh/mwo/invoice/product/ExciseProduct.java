@@ -1,38 +1,35 @@
 package pl.edu.agh.mwo.invoice.product;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
 
-public class ExciseProduct extends Product {
-    private static final BigDecimal constTax = new BigDecimal(5.56);
+public abstract class ExciseProduct extends Product {
+    private static final BigDecimal constTax = new BigDecimal("5.56");
+    private static final LocalDate motherInLawDate = LocalDate.of(2023, 03, 05);
+    private final LocalDate todayDate;
 
-    protected ExciseProduct(String name, BigDecimal price, BigDecimal tax) throws IllegalArgumentException {
+    protected ExciseProduct(String name, BigDecimal price, BigDecimal tax, LocalDate todayDate)
+            throws IllegalArgumentException {
         super(name, price, tax);
+        this.todayDate = todayDate;
     }
 
     @Override
-    public BigDecimal getPrice() {
+    public BigDecimal getPriceWithTax() {
         if (checkIfMotherInLawDayIsToday()) {
-            return super.getPrice().add(constTax);
+            return super.getPriceWithTax();
         } else {
-            return super.getPrice();
+            return super.getPriceWithTax().add(constTax);
         }
 
     }
 
-    private static boolean checkIfMotherInLawDayIsToday() {
-        LocalDate todayDate = LocalDate.now();
+    private boolean checkIfMotherInLawDayIsToday() {
+        LocalDate todayDate = this.todayDate;
         int todayDay = todayDate.getDayOfMonth();
         int todayMonth = todayDate.getMonthValue();
-
-        LocalDate motherInLawDate = LocalDate.of(2023, 03, 05);
-        int motherinLawDay = motherInLawDate.getDayOfMonth();
-        int motherinLawMonth = motherInLawDate.getMonthValue();
-        if (todayDay == motherinLawDay && todayMonth == motherinLawMonth) {
-            return true;
-        } else {
-            return false;
-        }
+        int motherInLawDay = motherInLawDate.getDayOfMonth();
+        int motherInLawMonth = motherInLawDate.getMonthValue();
+        return todayDay == motherInLawDay && todayMonth == motherInLawMonth;
     }
 }
