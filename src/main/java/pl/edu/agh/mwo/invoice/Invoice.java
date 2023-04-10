@@ -3,12 +3,13 @@ package pl.edu.agh.mwo.invoice;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    private Map<Product, Integer> products = new HashMap<>();
+    private LinkedHashMap<Product, Integer> products = new LinkedHashMap<>();
     private static int nextNumber = 0;
     private final int invoiceNumber = ++nextNumber;
     private int itemCounter = 0;
@@ -84,7 +85,7 @@ public class Invoice {
         productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue())
-                    + ", " + String.valueOf(entry.getKey().getPrice());
+                    + ", " + String.valueOf(entry.getKey().getPriceWithTax());
             productList.add(productItem);
             incrementItemCounter();
         }
