@@ -14,6 +14,7 @@ public class Invoice {
     private static int nextNumber = 0;
     private final int invoiceNumber = ++nextNumber;
     private int itemCounter = 0;
+    private static final int setPrecision = 4;
 
     public Map<Product, Integer> getProducts() {
         return products;
@@ -82,7 +83,6 @@ public class Invoice {
     }
 
     public ArrayList<String> generateProductList() {
-        int setPrecision = 4;
         MathContext precision = new MathContext(setPrecision);
         productList.clear();
         productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
