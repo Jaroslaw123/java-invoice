@@ -1,16 +1,16 @@
 package pl.edu.agh.mwo.invoice;
 
+import pl.edu.agh.mwo.invoice.product.Product;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import pl.edu.agh.mwo.invoice.product.Product;
+import java.util.Objects;
 
 public class Invoice {
-    private LinkedHashMap<Product, Integer> products = new LinkedHashMap<>();
+    private final LinkedHashMap<Product, Integer> products = new LinkedHashMap<>();
     private static int nextNumber = 0;
     private final int invoiceNumber = ++nextNumber;
     private int itemCounter = 0;
@@ -19,7 +19,7 @@ public class Invoice {
         return products;
     }
 
-    private ArrayList<String> productList = new ArrayList<String>();
+    private final ArrayList<String> productList = new ArrayList<>();
 
 
     public int getItemCounter() {
@@ -35,12 +35,12 @@ public class Invoice {
     }
 
     public void addProduct(Product product, Integer quantity) {
-        Boolean equalProductFlag = false;
+        boolean equalProductFlag = false;
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
         }
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
-            if (entry.getKey().getName() == product.getName()) {
+            if (Objects.equals(entry.getKey().getName(), product.getName())) {
                 entry.setValue(entry.getValue() + quantity);
                 equalProductFlag = true;
                 break;
