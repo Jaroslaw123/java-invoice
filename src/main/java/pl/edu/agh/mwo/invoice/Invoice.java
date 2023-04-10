@@ -82,11 +82,13 @@ public class Invoice {
     }
 
     public ArrayList<String> generateProductList() {
+        int setPrecision = 4;
+        MathContext precision = new MathContext(setPrecision);
         productList.clear();
         productList.add("Numer faktury: " + String.valueOf(invoiceNumber));
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
             String productItem = entry.getKey().getName() + ", " + String.valueOf(entry.getValue())
-                    + ", " + String.valueOf(entry.getKey().getPriceWithTax().round(new MathContext(4)));
+                    + ", " + String.valueOf(entry.getKey().getPriceWithTax().round(precision));
             productList.add(productItem);
             incrementItemCounter();
         }
